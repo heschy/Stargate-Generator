@@ -1,2 +1,3 @@
 # Stargate-Generator
-An addon for blender, that creates a MilkyWay-StarGate
+This will come soon.
+Acctually I am learning how to maintain Geometry/Shader Notes in Blender with Python.
