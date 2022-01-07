@@ -2,9 +2,12 @@
 
 is an add-on for blender wich is able to create Stargates. It will be able to create SG1 and Atlantis Gates. 
 Stargate-Simulator is still under development and I impprove it every day.
+### Todos
+
+The Todos have been moved to an other site : [They are here](https://github.com/heschy/Stargate-Generator/projects/1?fullscreen=true)
 
 ### Status
-[Current Status](https://github.com/heschy/Stargate-Generator/projects/1?fullscreen=true):
+Current Status:
 ```
 The addon will do this:
 1. Create a cylinder
