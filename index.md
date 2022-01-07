@@ -2,7 +2,7 @@
 
 is an add-on for blender wich is able to create Stargates. It will be able to create SG1 and Atlantis Gates. But it is still in work.
 
-[Current Status](https://github.com/heschy/Stargate-Generator/projects/1):
+[Current Status](https://github.com/heschy/Stargate-Generator/projects/1?fullscreen=true):
 ```
 The addon will do this:
 1. Create a cylinder
