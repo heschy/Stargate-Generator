@@ -6,6 +6,19 @@ from bpy import ops     as O
 from bpy import props   as P
 import bpy
 
+bl_info = {
+    "name": "StarGate Generator",
+    "description": "This addon creates StarGates.",
+    "author": "Henry Schynol",
+    "version": (1, 0),
+    "blender": (3, 0, 0),
+    "location": "View3D > Toolbar > Create > StarGate",
+    "warning": "This AddOn is still under development!",
+    "doc_url": "https://github.com/heschy/Stargate-Generator/wiki",
+    "support": "COMMUNITY ",
+    "category": "Add Mesh",
+}
+
 #    'BaseColor':0,
 #    'Metallic':4,
 #    'Rougness':7,
@@ -17,7 +30,7 @@ def STARGATE_SUBMETHOD_SEARCH_PATTERN(name):
 
 def STARGATE_SUBMETHOD_CREATEGATE(v, r, s, n): # v:vertices r:rotation s:scale n:name
     
-    v *= 8
+    v *= 16
     
     r = tuple(r)
     s = list(s)
@@ -77,9 +90,14 @@ class STARGATE_OT_addstargate_milkyway(T.Operator):
     bl_label       = "Add Stargate (Milkyway)"
     bl_idname      = "stargate.addmilkygate_operator"
     
+    sg_obj_name  : P.StringProperty(name='Name', default='StarGate')
+    sg_obj_rot   : P.FloatVectorProperty(name='Rotation', default=(0,0,0), size=3)
+    sg_obj_scale : P.FloatVectorProperty(name='Scale', default=(1,1,1), size=3)
+    sg_obj_res   : P.IntProperty(name='Resolution', default=2)
+    
     def execute(self, context):
         
-        STARGATE_SUBMETHOD_CREATEGATE(s=(1,1,1),v=4, r=(0,0,0), n='sg')
+        STARGATE_SUBMETHOD_CREATEGATE(s=self.sg_obj_scale,v=self.sg_obj_res, r=self.sg_obj_rot, n=self.sg_obj_name)
         
         default_y = 300
         
@@ -197,8 +215,8 @@ class STARGATE_OT_addstargate_milkyway(T.Operator):
         
         return{'FINISHED'}
     
-    #def invoke(self, context, event):
-    #    return context.window_manager.invoke_props_dialog(self)
+    def invoke(self, context, event):
+        return context.window_manager.invoke_props_dialog(self)
     
 
 classes = [STARGATE_OT_addstargate_milkyway, STARGATE_PT_MAINPANEL]
