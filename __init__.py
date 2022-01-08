@@ -3,6 +3,7 @@ from bpy import context as C
 from bpy import data    as D
 from bpy import types   as T
 from bpy import ops     as O
+from bpy import props   as P
 import bpy
 
 #    'BaseColor':0,
@@ -10,6 +11,9 @@ import bpy
 #    'Rougness':7,
 #    'Emission':17,
 #    'EmissionStrength':18
+
+def STARGATE_SUBMETHOD_SEARCH_PATTERN(name):
+    return "^" + name + "*\\..{3}$"
 
 def STARGATE_SUBMETHOD_CREATEGATE(v, r, s, n): # v:vertices r:rotation s:scale n:name
     
@@ -46,7 +50,7 @@ def STARGATE_SUBMETHOD_CREATEGATE(v, r, s, n): # v:vertices r:rotation s:scale n
     geonodes.node_group = D.node_groups[newname] # To be sure that the first Material with this name is used.
         
     for i in D.node_groups:
-        if re.search("^MilkyWay Stargate*\\..{3}$", i.name_full):
+        if re.search(STARGATE_SUBMETHOD_SEARCH_PATTERN('MilkyWay Stargate'), i.name_full):
             D.node_groups.remove(i)
     
 
@@ -54,7 +58,7 @@ def STARGATE_SUBMETHOD_CREATEGATE(v, r, s, n): # v:vertices r:rotation s:scale n
     return {'FINISHED'}
     
 
-class STARGATE_PT_SHADER(T.Panel):
+class STARGATE_PT_MAINPANEL(T.Panel):
     """StarGate Creator AddOn by Henry Schynol"""
     bl_label       = "StarGate"
     bl_idname      = "STARGATE_PT_mainPanel"
@@ -75,30 +79,50 @@ class STARGATE_OT_addstargate_milkyway(T.Operator):
     
     def execute(self, context):
         
-        STARGATE_SUBMETHOD_CREATEGATE(s=(1,1,1),v=4, r=(0,0,0), n='StarGate')
+        STARGATE_SUBMETHOD_CREATEGATE(s=(1,1,1),v=4, r=(0,0,0), n='sg')
         
+        default_y = 300
         
         mat_naquadah = D.materials.new(name='Naquadah')
         mat_naquadah = D.materials['Naquadah']
         mat_naquadah.use_nodes = True
+        naquadah_tree  = mat_naquadah.node_tree
+        naquadah_nodes = naquadah_tree.nodes
         
         C.object.active_material = mat_naquadah 
         
         for i in D.materials:
-            if re.search("^Naquadah*\\..{3}$", i.name_full):
+            if re.search(STARGATE_SUBMETHOD_SEARCH_PATTERN('Naquadah'), i.name_full):
                 D.materials.remove(i)
         
         main_shader = mat_naquadah.node_tree.nodes.get('Principled BSDF')
         
-        main_shader.inputs[0].default_value = (1,1,0,1)
         main_shader.inputs[7].default_value = 0.75
+        main_shader.location = (0,default_y)
         
-        rgb_node = mat_naquadah.node_tree.nodes.new(type="ShaderNodeAmbientOcclusion")
-
+        for i in D.materials:
+            if re.search("^Ambient Occlusion*\\..{3}$", i.name_full):
+                D.materials.remove(i)
+        
+        ao_node = naquadah_nodes.new(type="ShaderNodeAmbientOcclusion")
+        ao_node = naquadah_nodes['Ambient Occlusion']
+        for i in naquadah_nodes:
+            if re.search(STARGATE_SUBMETHOD_SEARCH_PATTERN('Ambient Occlusion'), i.name):
+                naquadah_nodes.remove(i)
+        ao_node.location = (-200, default_y) 
+        
+        connect = naquadah_tree.links.new
+        
+        connect(ao_node.outputs[0], main_shader.inputs[0])
+        
         
         return{'FINISHED'}
+    
+    #def invoke(self, context, event):
+    #    return context.window_manager.invoke_props_dialog(self)
+    
 
-classes = [STARGATE_OT_addstargate_milkyway, STARGATE_PT_SHADER]
+classes = [STARGATE_OT_addstargate_milkyway, STARGATE_PT_MAINPANEL]
 
 def register():
     for cls in classes:
