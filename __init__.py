@@ -42,10 +42,11 @@ def STARGATE_SUBMETHOD_CREATE_NAQUADAH(default_y):
         naquadah_nodes = mat_naquadah.node_tree.nodes.new(type='ShaderNodeGroup')#,settings=[{'name':'node_tree', 'value':"bpy.data.node_groups['Naquadah Shader']"}])
         naquadah_nodes.name = 'STARGATE_NODE_GROUP_NAQUADAH'
         naquadah_nodes = mat_naquadah.node_tree.nodes['STARGATE_NODE_GROUP_NAQUADAH']
+        naquadah_nodes.node_tree = group_naquadah
         naquadah_nodes.location = (0, default_y)
         
         for i in mat_naquadah.node_tree.nodes:
-            if re.search(STARGATE_SUBMETHOD_SEARCH_PATTERN('STARGATE_NODE_GROUP_NAQUADAH'), i.name_full):
+            if re.search(STARGATE_SUBMETHOD_SEARCH_PATTERN('STARGATE_NODE_GROUP_NAQUADAH'), i.name):
                 D.node_groups.remove(i)
         
         for i in D.node_groups:
@@ -209,13 +210,11 @@ def STARGATE_SUBMETHOD_CREATEGATE(v, r, s, n): # v:vertices r:rotation s:scale n
     
     geonodename = geonodes.node_group.name_full
     
-    newname = 'MilkyWay Stargate'
-    
-    D.node_groups[geonodename].name = newname
+    D.node_groups[geonodename].name = 'MilkyWay Stargate'
     
     geonodename = geonodes.node_group.name_full
 
-    geonodes.node_group = D.node_groups[newname] # To be sure that the first Material with this name is used.
+    geonodes.node_group = D.node_groups['MilkyWay Stargate'] # To be sure that the first Material with this name is used.
         
     for i in D.node_groups:
         if re.search(STARGATE_SUBMETHOD_SEARCH_PATTERN('MilkyWay Stargate'), i.name_full):
