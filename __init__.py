@@ -115,6 +115,18 @@ class STARGATE_OT_addstargate_milkyway(T.Operator):
         
         connect(ao_node.outputs[0], main_shader.inputs[0])
         
+        mix_node = naquadah_nodes.new(type="ShaderNodeMixRGB")
+        mix_node.name = 'STARGATE_MATERIAL:NAQUADAH_NODE:MIX'
+        mix_node = naquadah_nodes['STARGATE_MATERIAL:NAQUADAH_NODE:MIX']
+        for i in naquadah_nodes:
+            if re.search(STARGATE_SUBMETHOD_SEARCH_PATTERN('STARGATE_MATERIAL:NAQUADAH_NODE:MIX'), i.name):
+                naquadah_nodes.remove(i)
+        mix_node.location = (-400, default_y)
+        
+        mix_node.inputs[1].default_value = (0.332452, 0.332452, 0.332452, 1.000000)
+        mix_node.inputs[2].default_value = (0.095307, 0.095307, 0.095307, 1.000000)
+        
+        connect(mix_node.outputs[0], ao_node.inputs[0])
         
         return{'FINISHED'}
     
