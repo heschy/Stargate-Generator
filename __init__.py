@@ -97,6 +97,7 @@ class STARGATE_OT_addstargate_milkyway(T.Operator):
         
         main_shader = mat_naquadah.node_tree.nodes.get('Principled BSDF')
         
+        main_shader.inputs[4].default_value = 1
         main_shader.inputs[7].default_value = 0.75
         main_shader.location = (0,default_y)
         
@@ -121,9 +122,10 @@ class STARGATE_OT_addstargate_milkyway(T.Operator):
             if re.search(STARGATE_SUBMETHOD_SEARCH_PATTERN('STARGATE_MATERIAL:NAQUADAH_NODE:MIX'), i.name):
                 naquadah_nodes.remove(i)
         mix_node.location = (-400, default_y)
-        
-        mix_node.inputs[1].default_value = (0.332452, 0.332452, 0.332452, 1.000000)
-        mix_node.inputs[2].default_value = (0.095307, 0.095307, 0.095307, 1.000000)
+        mix_node_val_a = 0.632452
+        mix_node_val_b = 0.295307
+        mix_node.inputs[1].default_value = (mix_node_val_a, mix_node_val_a, mix_node_val_a, 1.000000)
+        mix_node.inputs[2].default_value = (mix_node_val_b, mix_node_val_b, mix_node_val_b, 1.000000)
         
         connect(mix_node.outputs[0], ao_node.inputs[0])
         
@@ -136,6 +138,62 @@ class STARGATE_OT_addstargate_milkyway(T.Operator):
         noise_node.location = (-600, default_y)
         
         connect(noise_node.outputs[0], mix_node.inputs[0])
+        
+        val_node = naquadah_nodes.new(type="ShaderNodeValue")
+        val_node.name = 'STARGATE_MATERIAL:NAQUADAH_NODE:VAL'
+        val_node = naquadah_nodes['STARGATE_MATERIAL:NAQUADAH_NODE:VAL']
+        val_node.label = 'Noise Scale'
+        for i in naquadah_nodes:
+            if re.search(STARGATE_SUBMETHOD_SEARCH_PATTERN('STARGATE_MATERIAL:NAQUADAH_NODE:VAL'), i.name):
+                naquadah_nodes.remove(i)
+        val_node.location = (-800, default_y)
+        
+        val_node.outputs[0].default_value=2.5
+        
+        connect(val_node.outputs[0], noise_node.inputs[2])
+        
+        map_node = naquadah_nodes.new(type="ShaderNodeMapping")
+        map_node.name = 'STARGATE_MATERIAL:NAQUADAH_NODE:MAP'
+        map_node = naquadah_nodes['STARGATE_MATERIAL:NAQUADAH_NODE:MAP']
+        for i in naquadah_nodes:
+            if re.search(STARGATE_SUBMETHOD_SEARCH_PATTERN('STARGATE_MATERIAL:NAQUADAH_NODE:MAP'), i.name):
+                naquadah_nodes.remove(i)
+        map_node.location = (-800, default_y-100) 
+        
+        connect(map_node.outputs[0], noise_node.inputs[0])
+        
+        tex_node = naquadah_nodes.new(type="ShaderNodeTexCoord")
+        tex_node.name = 'STARGATE_MATERIAL:NAQUADAH_NODE:TEX'
+        tex_node = naquadah_nodes['STARGATE_MATERIAL:NAQUADAH_NODE:TEX']
+        for i in naquadah_nodes:
+            if re.search(STARGATE_SUBMETHOD_SEARCH_PATTERN('STARGATE_MATERIAL:NAQUADAH_NODE:TEX'), i.name):
+                naquadah_nodes.remove(i)
+        tex_node.location = (-1000, default_y) 
+        connect(tex_node.outputs[3], map_node.inputs[0])
+        
+        range_node = naquadah_nodes.new(type="ShaderNodeMapRange")
+        range_node.name = 'STARGATE_MATERIAL:NAQUADAH_NODE:RANGE'
+        range_node = naquadah_nodes['STARGATE_MATERIAL:NAQUADAH_NODE:RANGE']
+        for i in naquadah_nodes:
+            if re.search(STARGATE_SUBMETHOD_SEARCH_PATTERN('STARGATE_MATERIAL:NAQUADAH_NODE:RANGE'), i.name):
+                naquadah_nodes.remove(i)
+        range_node.location = (-1000, default_y-250) 
+        range_node.inputs[3].default_value=0.75
+        range_node.inputs[4].default_value=1.25
+        
+        connect(range_node.outputs[0], map_node.inputs[1])
+        connect(range_node.outputs[0], map_node.inputs[2])
+        
+        
+        obj_node = naquadah_nodes.new(type="ShaderNodeObjectInfo")
+        obj_node.name = 'STARGATE_MATERIAL:NAQUADAH_NODE:OBJ'
+        obj_node = naquadah_nodes['STARGATE_MATERIAL:NAQUADAH_NODE:OBJ']
+        for i in naquadah_nodes:
+            if re.search(STARGATE_SUBMETHOD_SEARCH_PATTERN('STARGATE_MATERIAL:NAQUADAH_NODE:OBJ'), i.name):
+                naquadah_nodes.remove(i)
+        obj_node.location = (-1200, default_y-250) 
+        
+        connect(obj_node.outputs[4], range_node.inputs[0])
         
         return{'FINISHED'}
     
