@@ -13,9 +13,9 @@ bl_info = {
     "version": (1, 0),
     "blender": (3, 0, 0),
     "location": "View3D > Toolbar > Create > StarGate",
-    "warning": "This AddOn is still under development!",
+    "warning": "This AddOn is still under development!", # used for warning icon and text in addons panel
     "doc_url": "https://github.com/heschy/Stargate-Generator/wiki",
-    "support": "COMMUNITY ",
+    "support": "TESTING",
     "category": "Add Mesh",
 }
 
@@ -30,7 +30,7 @@ def STARGATE_SUBMETHOD_SEARCH_PATTERN(name):
 
 def STARGATE_SUBMETHOD_CREATEGATE(v, r, s, n): # v:vertices r:rotation s:scale n:name
     
-    v *= 16
+    v *= 8
     
     r = tuple(r)
     s = list(s)
@@ -90,16 +90,12 @@ class STARGATE_OT_addstargate_milkyway(T.Operator):
     bl_label       = "Add Stargate (Milkyway)"
     bl_idname      = "stargate.addmilkygate_operator"
     
-    sg_obj_name  : P.StringProperty(name='Name', default='StarGate')
-    sg_obj_rot   : P.FloatVectorProperty(name='Rotation', default=(0,0,0), size=3)
-    sg_obj_scale : P.FloatVectorProperty(name='Scale', default=(1,1,1), size=3)
-    sg_obj_res   : P.IntProperty(name='Resolution', default=2)
+    scale : P.FloatVectorProperty(name='Scale',       default=(1,1,1), size=3)
+    res   : P.IntProperty(        name='Resolution',  default=2)
+    rot   : P.FloatVectorProperty(name='Rotation',    default=(0,0,0), size=3)
+    name  : P.StringProperty(     name='Object Name', default='StarGate')
     
-    def execute(self, context):
-        
-        STARGATE_SUBMETHOD_CREATEGATE(s=self.sg_obj_scale,v=self.sg_obj_res, r=self.sg_obj_rot, n=self.sg_obj_name)
-        
-        default_y = 300
+    def STARGATE_SUBMETHOD_CREATE_NAQUADAH(self, default_y):
         
         mat_naquadah = D.materials.new(name='Naquadah')
         mat_naquadah = D.materials['Naquadah']
@@ -107,21 +103,35 @@ class STARGATE_OT_addstargate_milkyway(T.Operator):
         naquadah_nodes = mat_naquadah.node_tree.nodes
         connect = mat_naquadah.node_tree.links.new
         
+        for i in naquadah_nodes:
+            naquadah_nodes.remove(i)
+        
         C.object.active_material = mat_naquadah 
         
         for i in D.materials:
             if re.search(STARGATE_SUBMETHOD_SEARCH_PATTERN('Naquadah'), i.name_full):
                 D.materials.remove(i)
+                
+        mat_out = naquadah_nodes.new('ShaderNodeOutputMaterial')
+        mat_out.name = 'STARGATE_MATERIAL:NAQUADAH_NODE:OUT'
+        mat_out = naquadah_nodes['STARGATE_MATERIAL:NAQUADAH_NODE:OUT']
+        for i in naquadah_nodes:
+            if re.search(STARGATE_SUBMETHOD_SEARCH_PATTERN('STARGATE_MATERIAL:NAQUADAH_NODE:OUT'), i.name):
+                naquadah_nodes.remove(i)
+        mat_out.location = (300, default_y)
+            
+        bsdf_node = None
+        bsdf_node = naquadah_nodes.new('ShaderNodeBsdfPrincipled')
+        bsdf_node.name = 'STARGATE_MATERIAL:NAQUADAH_NODE:MAIN'
+        bsdf_node = naquadah_nodes['STARGATE_MATERIAL:NAQUADAH_NODE:MAIN']
+        for i in naquadah_nodes:
+            if re.search(STARGATE_SUBMETHOD_SEARCH_PATTERN('STARGATE_MATERIAL:NAQUADAH_NODE:MAIN'), i.name):
+                naquadah_nodes.remove(i)
+        bsdf_node.inputs[4].default_value = 1
+        bsdf_node.inputs[7].default_value = 0.75
+        bsdf_node.location = (0,default_y)
         
-        main_shader = mat_naquadah.node_tree.nodes.get('Principled BSDF')
-        
-        main_shader.inputs[4].default_value = 1
-        main_shader.inputs[7].default_value = 0.75
-        main_shader.location = (0,default_y)
-        
-        for i in D.materials:
-            if re.search("^Ambient Occlusion*\\..{3}$", i.name_full):
-                D.materials.remove(i)
+        connect(bsdf_node.outputs[0], mat_out.inputs[0])
         
         ao_node = naquadah_nodes.new(type="ShaderNodeAmbientOcclusion")
         ao_node.name = 'STARGATE_MATERIAL:NAQUADAH_NODE:AO'
@@ -130,8 +140,7 @@ class STARGATE_OT_addstargate_milkyway(T.Operator):
             if re.search(STARGATE_SUBMETHOD_SEARCH_PATTERN('STARGATE_MATERIAL:NAQUADAH_NODE:AO'), i.name):
                 naquadah_nodes.remove(i)
         ao_node.location = (-200, default_y) 
-        
-        connect(ao_node.outputs[0], main_shader.inputs[0])
+        connect(ao_node.outputs[0], bsdf_node.inputs[0])
         
         mix_node = naquadah_nodes.new(type="ShaderNodeMixRGB")
         mix_node.name = 'STARGATE_MATERIAL:NAQUADAH_NODE:MIX'
@@ -154,7 +163,6 @@ class STARGATE_OT_addstargate_milkyway(T.Operator):
             if re.search(STARGATE_SUBMETHOD_SEARCH_PATTERN('STARGATE_MATERIAL:NAQUADAH_NODE:NOISE'), i.name):
                 naquadah_nodes.remove(i)
         noise_node.location = (-600, default_y)
-        
         connect(noise_node.outputs[0], mix_node.inputs[0])
         
         val_node = naquadah_nodes.new(type="ShaderNodeValue")
@@ -165,7 +173,6 @@ class STARGATE_OT_addstargate_milkyway(T.Operator):
             if re.search(STARGATE_SUBMETHOD_SEARCH_PATTERN('STARGATE_MATERIAL:NAQUADAH_NODE:VAL'), i.name):
                 naquadah_nodes.remove(i)
         val_node.location = (-800, default_y)
-        
         val_node.outputs[0].default_value=2.5
         
         connect(val_node.outputs[0], noise_node.inputs[2])
@@ -187,6 +194,7 @@ class STARGATE_OT_addstargate_milkyway(T.Operator):
             if re.search(STARGATE_SUBMETHOD_SEARCH_PATTERN('STARGATE_MATERIAL:NAQUADAH_NODE:TEX'), i.name):
                 naquadah_nodes.remove(i)
         tex_node.location = (-1000, default_y) 
+        
         connect(tex_node.outputs[3], map_node.inputs[0])
         
         range_node = naquadah_nodes.new(type="ShaderNodeMapRange")
@@ -212,6 +220,19 @@ class STARGATE_OT_addstargate_milkyway(T.Operator):
         obj_node.location = (-1200, default_y-250) 
         
         connect(obj_node.outputs[4], range_node.inputs[0])
+        
+        
+        for i in naquadah_nodes:
+            i.width =150.0
+            i.select = True
+            
+        bsdf_node.width = 250.0
+        mat_out.select = False
+    
+    def execute(self, context):
+        
+        STARGATE_SUBMETHOD_CREATEGATE(s=self.scale,v=self.res, r=self.rot, n=self.name)
+        self.STARGATE_SUBMETHOD_CREATE_NAQUADAH(200)
         
         return{'FINISHED'}
     
