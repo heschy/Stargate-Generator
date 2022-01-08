@@ -70,7 +70,7 @@ class STARGATE_PT_MAINPANEL(T.Panel):
         layout = self.layout
 
         layout.operator('stargate.addmilkygate_operator', icon='PLUS')
-        layout.operator('stargate.addmilkygate_operator', icon='PLUS')
+        #layout.operator('stargate.addatlantisgate_operator', icon='PLUS')
         
 class STARGATE_OT_addstargate_milkyway(T.Operator):
     """This Operation adds a milkyway-Stargate to your scene.\nMilkyway-Stargates are the Stargates with orange Chevrons.\nThey can be found in the milkyway-galaxy"""
@@ -86,8 +86,8 @@ class STARGATE_OT_addstargate_milkyway(T.Operator):
         mat_naquadah = D.materials.new(name='Naquadah')
         mat_naquadah = D.materials['Naquadah']
         mat_naquadah.use_nodes = True
-        naquadah_tree  = mat_naquadah.node_tree
-        naquadah_nodes = naquadah_tree.nodes
+        naquadah_nodes = mat_naquadah.node_tree.nodes
+        connect = mat_naquadah.node_tree.links.new
         
         C.object.active_material = mat_naquadah 
         
@@ -105,13 +105,12 @@ class STARGATE_OT_addstargate_milkyway(T.Operator):
                 D.materials.remove(i)
         
         ao_node = naquadah_nodes.new(type="ShaderNodeAmbientOcclusion")
-        ao_node = naquadah_nodes['Ambient Occlusion']
+        ao_node.name = 'STARGATE_MATERIAL:NAQUADAH_NODE:AO'
+        ao_node = naquadah_nodes['STARGATE_MATERIAL:NAQUADAH_NODE:AO']
         for i in naquadah_nodes:
-            if re.search(STARGATE_SUBMETHOD_SEARCH_PATTERN('Ambient Occlusion'), i.name):
+            if re.search(STARGATE_SUBMETHOD_SEARCH_PATTERN('STARGATE_MATERIAL:NAQUADAH_NODE:AO'), i.name):
                 naquadah_nodes.remove(i)
         ao_node.location = (-200, default_y) 
-        
-        connect = naquadah_tree.links.new
         
         connect(ao_node.outputs[0], main_shader.inputs[0])
         
@@ -127,6 +126,16 @@ class STARGATE_OT_addstargate_milkyway(T.Operator):
         mix_node.inputs[2].default_value = (0.095307, 0.095307, 0.095307, 1.000000)
         
         connect(mix_node.outputs[0], ao_node.inputs[0])
+        
+        noise_node = naquadah_nodes.new(type="ShaderNodeTexNoise")
+        noise_node.name = 'STARGATE_MATERIAL:NAQUADAH_NODE:NOISE'
+        noise_node = naquadah_nodes['STARGATE_MATERIAL:NAQUADAH_NODE:NOISE']
+        for i in naquadah_nodes:
+            if re.search(STARGATE_SUBMETHOD_SEARCH_PATTERN('STARGATE_MATERIAL:NAQUADAH_NODE:NOISE'), i.name):
+                naquadah_nodes.remove(i)
+        noise_node.location = (-600, default_y)
+        
+        connect(noise_node.outputs[0], mix_node.inputs[0])
         
         return{'FINISHED'}
     
