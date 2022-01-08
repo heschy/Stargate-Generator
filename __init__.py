@@ -91,8 +91,10 @@ class STARGATE_OT_addstargate_milkyway(T.Operator):
         main_shader = mat_naquadah.node_tree.nodes.get('Principled BSDF')
         
         main_shader.inputs[0].default_value = (1,1,0,1)
+        main_shader.inputs[7].default_value = 0.75
         
-        
+        rgb_node = mat_naquadah.node_tree.nodes.new(type="ShaderNodeAmbientOcclusion")
+
         
         return{'FINISHED'}
 
