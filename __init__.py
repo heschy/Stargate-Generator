@@ -28,80 +28,32 @@ bl_info = {
 def STARGATE_SUBMETHOD_SEARCH_PATTERN(name):
     return "^" + name + "*\\..{3}$"
 
-def STARGATE_SUBMETHOD_CREATEGATE(v, r, s, n): # v:vertices r:rotation s:scale n:name
-    
-    v *= 8
-    
-    r = tuple(r)
-    s = list(s)
-    
-    s[0] *= 4.0
-    s[1] *= 4.0
-    s[2] *= 0.5
-    
-    s = tuple(s)
-    
-    O.mesh.primitive_cylinder_add(vertices=v, enter_editmode=False, align='WORLD', scale=s, rotation=r)
-    C.object.name = n
-    objname = C.object.name_full
-    C.object.data.use_auto_smooth = True
-    O.object.shade_smooth()
-    
-    O.node.new_geometry_nodes_modifier()
-    C.object.modifiers['GeometryNodes'].name = 'Stargate'
-    
-    geonodes = C.object.modifiers['Stargate']
-    
-    geonodename = geonodes.node_group.name_full
-    
-    newname = 'MilkyWay Stargate'
-    
-    D.node_groups[geonodename].name = newname
-    
-    geonodename = geonodes.node_group.name_full
-
-    geonodes.node_group = D.node_groups[newname] # To be sure that the first Material with this name is used.
-        
-    for i in D.node_groups:
-        if re.search(STARGATE_SUBMETHOD_SEARCH_PATTERN('MilkyWay Stargate'), i.name_full):
-            D.node_groups.remove(i)
-    
-
-    
-    return {'FINISHED'}
-    
-
-class STARGATE_PT_MAINPANEL(T.Panel):
-    """StarGate Creator AddOn by Henry Schynol"""
-    bl_label       = "StarGate"
-    bl_idname      = "STARGATE_PT_mainPanel"
-    bl_space_type  = 'VIEW_3D'
-    bl_region_type = 'UI'
-    bl_category    = "Create"
-
-    def draw(self, context):
-        layout = self.layout
-
-        layout.operator('stargate.addmilkygate_operator', icon='PLUS')
-        #layout.operator('stargate.addatlantisgate_operator', icon='PLUS')
-        
-class STARGATE_OT_addstargate_milkyway(T.Operator):
-    """This Operation adds a milkyway-Stargate to your scene.\nMilkyway-Stargates are the Stargates with orange Chevrons.\nThey can be found in the milkyway-galaxy"""
-    bl_label       = "Add Stargate (Milkyway)"
-    bl_idname      = "stargate.addmilkygate_operator"
-    
-    scale : P.FloatVectorProperty(name='Scale',       default=(1,1,1), size=3)
-    res   : P.IntProperty(        name='Resolution',  default=2)
-    rot   : P.FloatVectorProperty(name='Rotation',    default=(0,0,0), size=3)
-    name  : P.StringProperty(     name='Object Name', default='StarGate')
-    
-    def STARGATE_SUBMETHOD_CREATE_NAQUADAH(self, default_y):
+def STARGATE_SUBMETHOD_CREATE_NAQUADAH(default_y):
         
         mat_naquadah = D.materials.new(name='Naquadah')
         mat_naquadah = D.materials['Naquadah']
         mat_naquadah.use_nodes = True
-        naquadah_nodes = mat_naquadah.node_tree.nodes
+        group_naquadah = D.node_groups.new('Naquadah Shader', 'ShaderNodeTree')
         connect = mat_naquadah.node_tree.links.new
+        
+        for i in mat_naquadah.node_tree.nodes:
+            mat_naquadah.node_tree.nodes.remove(i)
+        
+        naquadah_nodes = mat_naquadah.node_tree.nodes.new(type='ShaderNodeGroup')#,settings=[{'name':'node_tree', 'value':"bpy.data.node_groups['Naquadah Shader']"}])
+        naquadah_nodes.name = 'STARGATE_NODE_GROUP_NAQUADAH'
+        naquadah_nodes = mat_naquadah.node_tree.nodes['STARGATE_NODE_GROUP_NAQUADAH']
+        naquadah_nodes.location = (0, default_y)
+        
+        for i in mat_naquadah.node_tree.nodes:
+            if re.search(STARGATE_SUBMETHOD_SEARCH_PATTERN('STARGATE_NODE_GROUP_NAQUADAH'), i.name_full):
+                D.node_groups.remove(i)
+        
+        for i in D.node_groups:
+            if re.search(STARGATE_SUBMETHOD_SEARCH_PATTERN('Naquadah Shader'), i.name_full):
+                D.node_groups.remove(i)
+        
+        for i in mat_naquadah.node_tree.nodes:
+            mat_naquadah.node_tree.nodes.remove(i)
         
         for i in naquadah_nodes:
             naquadah_nodes.remove(i)
@@ -112,9 +64,9 @@ class STARGATE_OT_addstargate_milkyway(T.Operator):
             if re.search(STARGATE_SUBMETHOD_SEARCH_PATTERN('Naquadah'), i.name_full):
                 D.materials.remove(i)
                 
-        mat_out = naquadah_nodes.new('ShaderNodeOutputMaterial')
+        mat_out = mat_naquadah.node_tree.nodes.new('ShaderNodeOutputMaterial')
         mat_out.name = 'STARGATE_MATERIAL:NAQUADAH_NODE:OUT'
-        mat_out = naquadah_nodes['STARGATE_MATERIAL:NAQUADAH_NODE:OUT']
+        mat_out = mat_naquadah.node_tree.nodes['STARGATE_MATERIAL:NAQUADAH_NODE:OUT']
         for i in naquadah_nodes:
             if re.search(STARGATE_SUBMETHOD_SEARCH_PATTERN('STARGATE_MATERIAL:NAQUADAH_NODE:OUT'), i.name):
                 naquadah_nodes.remove(i)
@@ -228,19 +180,106 @@ class STARGATE_OT_addstargate_milkyway(T.Operator):
             
         bsdf_node.width = 250.0
         mat_out.select = False
+        
+        return {'FINISHED'}
+
+def STARGATE_SUBMETHOD_CREATEGATE(v, r, s, n): # v:vertices r:rotation s:scale n:name
+    
+    v *= 8
+    
+    r = tuple(r)
+    s = list(s)
+    
+    s[0] *= 4.0
+    s[1] *= 4.0
+    s[2] *= 0.5
+    
+    s = tuple(s)
+    
+    O.mesh.primitive_cylinder_add(vertices=v, enter_editmode=False, align='WORLD', scale=s, rotation=r)
+    C.object.name = n
+    objname = C.object.name_full
+    C.object.data.use_auto_smooth = True
+    O.object.shade_smooth()
+    
+    O.node.new_geometry_nodes_modifier()
+    C.object.modifiers['GeometryNodes'].name = 'Stargate'
+    
+    geonodes = C.object.modifiers['Stargate']
+    
+    geonodename = geonodes.node_group.name_full
+    
+    newname = 'MilkyWay Stargate'
+    
+    D.node_groups[geonodename].name = newname
+    
+    geonodename = geonodes.node_group.name_full
+
+    geonodes.node_group = D.node_groups[newname] # To be sure that the first Material with this name is used.
+        
+    for i in D.node_groups:
+        if re.search(STARGATE_SUBMETHOD_SEARCH_PATTERN('MilkyWay Stargate'), i.name_full):
+            D.node_groups.remove(i)
+    
+
+    
+    return {'FINISHED'}
+    
+
+class STARGATE_PT_MAINPANEL(T.Panel):
+    """StarGate Creator AddOn by Henry Schynol"""
+    bl_label       = "StarGate"
+    bl_idname      = "STARGATE_PT_mainPanel"
+    bl_space_type  = 'VIEW_3D'
+    bl_region_type = 'UI'
+    bl_category    = "Create"
+
+    def draw(self, context):
+        layout = self.layout
+
+        layout.operator('stargate.addmilkygate_operator', icon='PLUS')
+        layout.operator('stargate.addshader_operator'   , icon='MATERIAL')
+        #layout.operator('stargate.addatlantisgate_operator', icon='PLUS')
+        
+class STARGATE_OT_addstargate_milkyway(T.Operator):
+    """This Operation adds a milkyway-Stargate to your scene.\nMilkyway-Stargates are the Stargates with orange Chevrons.\nThey can be found in the milkyway-galaxy"""
+    bl_label       = "Add Stargate (Milkyway)"
+    bl_idname      = "stargate.addmilkygate_operator"
+    
+    scale : P.FloatVectorProperty(name='Scale',       default=(1,1,1), size=3)
+    res   : P.IntProperty(        name='Resolution',  default=2)
+    rot   : P.FloatVectorProperty(name='Rotation',    default=(0,0,0), size=3)
+    name  : P.StringProperty(     name='Object Name', default='StarGate')
     
     def execute(self, context):
         
         STARGATE_SUBMETHOD_CREATEGATE(s=self.scale,v=self.res, r=self.rot, n=self.name)
-        self.STARGATE_SUBMETHOD_CREATE_NAQUADAH(200)
+        STARGATE_SUBMETHOD_CREATE_NAQUADAH(200)
         
         return{'FINISHED'}
     
     def invoke(self, context, event):
         return context.window_manager.invoke_props_dialog(self)
     
+class STARGATE_OT_create_shaders(T.Operator):
+    """This Operation creates all StarGate-Shaders without creating a StarGate."""
+    bl_label       = "Add Stargate Shaders"
+    bl_idname      = "stargate.addshader_operator"
+    
+    naquadah : P.BoolProperty(name='Naquadah', default=True)
+    chev_sg1 : P.BoolProperty(name='SG-1 Chevron', default=False)
+    chev_atl : P.BoolProperty(name='Atlantis Chevron', default=False)
+    chev_uni : P.BoolProperty(name='Universe-Gate', default=False)
+    tempgate : P.BoolProperty(name='Orlin-Gate', default=False)
+    
+    def execute(self, context):
+        if self.naquadah: STARGATE_SUBMETHOD_CREATE_NAQUADAH(200)
+        return {'FINISHED'}
+    
+    def invoke(self, context, event):
+        return context.window_manager.invoke_props_dialog(self)
 
-classes = [STARGATE_OT_addstargate_milkyway, STARGATE_PT_MAINPANEL]
+classes = [STARGATE_OT_create_shaders, STARGATE_OT_addstargate_milkyway, STARGATE_PT_MAINPANEL]
 
 def register():
     for cls in classes:
