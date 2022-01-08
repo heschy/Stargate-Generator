@@ -24,8 +24,8 @@ The addon will do this:
 ```
 ## About
 
-I got the Idea to creata a Stargate-Generator Addon for Blender when I created this by hand :
-![IMG_001](my_stargate_nogeoodes.png)      
+I got the Idea to creata a Stargate-Generator Addon for Blender when I created this by hand :      
+![IMG_001](my_stargate_nogeonodes.png)      
 This image is rendered with `Cycles X` in `Blender 3.0`.
 When i say the Original Gate, i mean this Gate. When I say the TV-Gate I mean the Gate wich appears in the TV-Show.
 
