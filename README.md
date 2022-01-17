@@ -1,4 +1,9 @@
 # Stargate-Generator       
+
+```
+Note: I know that my english is not realy good.
+```
+
 ## Current Status       
        
 Because Blender crashed and now I don't know wich file is the newest I recreate the addon.
