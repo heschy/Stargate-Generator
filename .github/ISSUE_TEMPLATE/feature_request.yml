@@ -1,5 +1,5 @@
-name: Bug Report
-description: File a bug report
+name: Feature Request
+description: Request a new Feature.
 title: "I want a <Paste Feature Name here> in this program."
 labels: ["enhanchement"]
 assignees:
@@ -9,6 +9,7 @@ body:
     attributes:
       value: |
         Thanks for taking the time to fill out this feature request!
+        You can look here again sometimes to see that your feature is implemented.
   - type: input
     id: contact
     attributes:
