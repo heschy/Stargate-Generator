@@ -38,7 +38,7 @@ body:
     validations:
       required: true
   - type: dropdown
-    id: Blender Version
+    id: blender-version
     attributes:
       label: Wich version of Blender Do you use?
       multiple: true
