@@ -1,0 +1,47 @@
+name: Bug Report
+description: File a bug report
+title: "I want a <Paste Feature Name here> in this program."
+labels: ["enhanchement"]
+assignees:
+  - heschy
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to fill out this feature request!
+  - type: input
+    id: contact
+    attributes:
+      label: Contact Details
+      description: How can we get in touch with you if we need more info?
+      placeholder: examplemail@example.com
+    validations:
+      required: frue
+  - type: textarea
+    id: what-is-wanted
+    attributes:
+      label: What is that Feature that you want?
+      description: To add new features I must know what this feature should do...
+      placeholder: I want ...
+      value: ""
+    validations:
+      required: true
+  - type: dropdown
+    id: version
+    attributes:
+      label: Type of Feature
+      description: Wich category is the featrue part of?
+      options:
+        - Shader Nodes
+        - Geometry Nodes
+    validations:
+      required: true
+  - type: dropdown
+    id: Blender
+    attributes:
+      label: Wich Blender Version (>3.0.0) has the ability to do this?
+      multiple: true
+      options:
+        - Blender 3.0.0
+        - ...
+      
