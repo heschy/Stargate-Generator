@@ -16,7 +16,7 @@ body:
       description: How can we get in touch with you if we need more info?
       placeholder: examplemail@example.com
     validations:
-      required: frue
+      required: true
   - type: textarea
     id: what-is-wanted
     attributes:
