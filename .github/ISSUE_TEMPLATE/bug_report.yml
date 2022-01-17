@@ -9,7 +9,7 @@ body:
     attributes:
       value: |
         Thanks for taking the time to fill out this bug report!
-        **Please write in german if you can.**
+        Please write in german if you can.
   - type: input
     id: contact
     attributes:
@@ -24,7 +24,7 @@ body:
       label: What happened?
       description: Also tell us, what did you expect to happen?
       placeholder: Tell us what you see!
-      value: "A bug happened!"
+      value: "I clicked on this Button and something went wrong!"
     validations:
       required: true
   - type: dropdown
@@ -33,31 +33,22 @@ body:
       label: Version
       description: What version of our software are you running?
       options:
-        - 1.0.2 (Default)
-        - 1.0.3 (Edge)
+        - 1.0 Beta
+        - 0.1 Beta ( Not reccommennded )
     validations:
       required: true
   - type: dropdown
-    id: browsers
+    id: Blender Version
     attributes:
-      label: What browsers are you seeing the problem on?
+      label: Wich version of Blender Do you use?
       multiple: true
       options:
-        - Firefox
-        - Chrome
-        - Safari
-        - Microsoft Edge
+        - 3.0.0
+        - Below 3.0.0
   - type: textarea
     id: logs
     attributes:
       label: Relevant log output
       description: Please copy and paste any relevant log output. This will be automatically formatted into code, so no need for backticks.
       render: shell
-  - type: checkboxes
-    id: terms
-    attributes:
-      label: Code of Conduct
-      description: By submitting this issue, you agree to follow our [Code of Conduct](https://example.com)
-      options:
-        - label: I agree to follow this project's Code of Conduct
-          required: true
+ 
