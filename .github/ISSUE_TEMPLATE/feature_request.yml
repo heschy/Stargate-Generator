@@ -23,7 +23,6 @@ body:
       label: What is that Feature that you want?
       description: To add new features I must know what this feature should do...
       placeholder: I want ...
-      value: ""
     validations:
       required: true
   - type: dropdown
