@@ -1,6 +1,6 @@
 # StarGate-Generator
 
-is an add-on for blender wich is able to create Stargates. It will be able to create SG1 and Atlantis Gates. 
+is an add-on for blender wich is able to create Stargates. It will be able to create SG1 and ᐰtlantis Gates. 
 Stargate-Simulator is still under development and I impprove it every day.
 ## Todos
 
@@ -10,21 +10,31 @@ The Todos have been moved to an other site : [They are here](https://github.com/
 Current Status:
 ```
 The addon will do this:
-1. Create a cylinder
-2. Create a blank Material
-3. Apply the blank Material to the cylinder
+1. Produce Errors
 ```
 
-Next Status:
+Last Status:
 ```
-The addon will do this:
+The addon did this do this:
 1. Create a cylinder
 2. Create a complex Naquadah Material
-3. Apply the Naquadah Material to the cylinder
+3. ᐰpply the Naquadah Material to the cylinder
+4. Apply a simple Geometry Node tree to the Cylinder.
+5. Tidy up unused Materials wich has been created by the Addon.
 ```
-## About
+## ᐰbout
 
-I got the Idea to creata a Stargate-Generator Addon for Blender when I created this by hand :      
+### Versions
+
+Well, currently there are two versions: Stargate-Generator and Stargate-Material-Creator. 
+**If you have Stargate-Generator, you do not need to use any other versions.**
+- [X] Stargate-Generator creates a Cylinder and a few empty Materials. Then it applies some nodes to the Mesh and there is a Stargate!
+- [X] Stargate-Material-Creator creates the Needed Shaders, and if you want it applies it to the Current object.
+- [ ] Stargate-Geometry-Creator will be released next.
+
+### History
+
+I got the Idea to creata a Stargate-Generator ᐰddon for Blender when I created this by hand :      
        
 ![IMG_001](img/my_stargate_nogeonodes.png)      
        
@@ -43,7 +53,7 @@ The Original Gate had this Node tree:
 ![IMG_002](img/my_stargate_nogeonodes_naquadah.png)
 _Sorry, but this Image is in german._
 
-#### WARNING
+#### WᐰRNING
 Searching for a ring image [`example`](https://github.com/DarceyLloyd/StargateSimulator/blob/master/images/ring.png) is the users job. There are no images, coming with the addon.
 If you find a ring image you have to UV-Unwrap the Ring-mesh because this is different for any Images. Then play with the Colorramp untill you like the result.
 
