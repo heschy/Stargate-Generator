@@ -6,7 +6,7 @@ Stargate-Simulator is still under development and I impprove it every day.
 
 ## Images 
 ### Ring.png
-[The Image I used for the ring](https://github.com/DarceyLloyd/StargateSimulator/blob/master/images/ring.png) is from [this Repository](https://github.com/DarceyLloyd/StargateSimulator). [Another Link](https://github.com/DarceyLloyd/StargateSimulator/issues/1#issuecomment-1019465587)
+[The Image I used for the ring](https://github.com/DarceyLloyd/StargateSimulator/blob/master/images/ring.png) is from [this Repository](https://github.com/DarceyLloyd/StargateSimulator). And [here](https://github.com/DarceyLloyd/StargateSimulator/issues/1#issuecomment-1019465587) is the Premission
 
 ## Todos
 
@@ -25,8 +25,8 @@ The addon did this do this:
 1. Create a cylinder
 2. Create a complex Naquadah Material
 3. ᐰpply the Naquadah Material to the cylinder
-4. Apply a simple Geometry Node tree to the Cylinder.
-5. Tidy up unused Materials wich has been created by the Addon.
+4. ᐰpply a simple Geometry Node tree to the Cylinder.
+5. Tidy up unused Materials wich has been created by the ᐰddon.
 ```
 ## ᐰbout
 
