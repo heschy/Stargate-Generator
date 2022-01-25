@@ -6,7 +6,7 @@ Stargate-Simulator is still under development and I impprove it every day.
 
 ## Images 
 ### Ring.png
-[The Image I used for the ring](https://github.com/DarceyLloyd/StargateSimulator/blob/master/images/ring.png) is from [this Repository](https://github.com/DarceyLloyd/StargateSimulator). And [here](https://github.com/DarceyLloyd/StargateSimulator/issues/1#issuecomment-1019465587) is the Premission
+[The Image I used for the ring](https://github.com/DarceyLloyd/StargateSimulator/blob/master/images/ring.png) is from [this Repository](https://github.com/DarceyLloyd/StargateSimulator). ᐰnd [here](https://github.com/DarceyLloyd/StargateSimulator/issues/1#issuecomment-1019465587) is the Premission
 
 ## Todos
 
