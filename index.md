@@ -6,7 +6,7 @@ Stargate-Simulator is still under development and I impprove it every day.
 
 ## Images 
 ### Ring.png
-[The Image I used for the ring](https://github.com/DarceyLloyd/StargateSimulator/blob/master/images/ring.png) is from [this Repository](https://github.com/DarceyLloyd/StargateSimulator). ᐰnd [here](https://github.com/DarceyLloyd/StargateSimulator/issues/1#issuecomment-1019465587) is the Premission
+[The Image I used for the ring](https://github.com/DarceyLloyd/StargateSimulator/blob/master/images/ring.png) is from [this Repository](https://github.com/DarceyLloyd/StargateSimulator). ᐰnd [here](https://github.com/DarceyLloyd/StargateSimulator/issues/1#issuecomment-1019465587) is the Premission.     
 
 ## Todos
 
@@ -56,3 +56,7 @@ _Sorry, but this Image is in german._
 
 Here is an image of my node tree ( from the Original gate ):     
 ![IMG_003](img/ring.png)
+
+### Geometry Nodes
+Here is the actual result of my Gemetry Nodes:
+![IMG_004](img/firsttry.png.png)
