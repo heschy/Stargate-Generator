@@ -14,7 +14,7 @@ Note: I know that my english is not really good.
 ## Current Status       
 
 ```
-All nodetrees have been created by hand.
+Most nodetrees have been created by hand.
 Now they are being recreated via Python.
 The Project is currently not finished.
 ```
