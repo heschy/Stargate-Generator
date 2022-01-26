@@ -1,5 +1,11 @@
 # Files from gh-pages Branch
-*.png
+img/*.png
+
+# Test files
+*.zip
+
+# Marked Files
+*_gitignore.*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

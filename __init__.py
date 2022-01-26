@@ -5,7 +5,7 @@ from bpy import types   as T
 from bpy import ops     as O
 from bpy import props   as P
 import bpy
-from . import *
+from .modules import *
 
 bl_info = {
     "name": "StarGate Generator",
@@ -16,15 +16,10 @@ bl_info = {
     "location": "View3D > Toolbar > Create > StarGate",
     "warning": "This AddOn is still under development!", # used for warning icon and text in addons panel
     "doc_url": "https://github.com/heschy/Stargate-Generator/wiki",
-    "support": "TESTING",
+    "support": "COMMUNITY",
     "category": "Add Mesh",
 }
 
-#    'BaseColor':0,
-#    'Metallic':4,
-#    'Rougness':7,
-#    'Emission':17,
-#    'EmissionStrength':18
 
 
 class STARGATE_PT_MAINPANEL(T.Panel):
@@ -37,11 +32,17 @@ class STARGATE_PT_MAINPANEL(T.Panel):
 
     def draw(self, context):
         layout = self.layout
+	
+	
+	row = layout.row()
+        row.operator('stargate.addmilkygate_operator', icon='PLUS')
+	#row = layout.row()                                              # Uncomment when Atlantis is Ready
+	#row.operator('stargate.addatlantisgate_operator', icon='PLUS')  # Uncomment when Atlantis Is Ready
+	row = layout.row()
+        row.operator('stargate.addshader_operator'   , icon='MATERIAL')
 
-        layout.operator('stargate.addmilkygate_operator', icon='PLUS')
-        layout.operator('stargate.addshader_operator'   , icon='MATERIAL')
-        #layout.operator('stargate.addatlantisgate_operator', icon='PLUS')
-        
+	return {'FINISHED'}
+
 classes = [STARGATE_PT_MAINPANEL]
 
 def register():
@@ -51,6 +52,6 @@ def register():
 def unregister():
     for cls in classes:
         bpy.utils.unregister_class(cls)
-        
+
 if __name__ == '__main__':
     register()
