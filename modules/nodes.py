@@ -23,10 +23,14 @@ nodenames = {
 
 class MyNodeTree():
     tree = None
+	nodes = None
+
     def __init__(self, nodetree):
         self.tree = nodetree
+		self.nodes = self.tree.nodes
 
-    def addnode(name,type,location,width=100):
-        node = self.tree.nodes.new(nodenames[type])
+    def addnode(name,type,location,width=100.0): # Arg types: name=str type=str location=tuple(x,y) width=float
+        node = self.nodes.new(nodenames[type])
         node.name = name
-        cleanup(name,self.tree.nodes)
+        cleanup(name,self.nodes)
+        node.location = location
