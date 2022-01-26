@@ -14,7 +14,9 @@ Note: I know that my english is not really good.
 ## Current Status       
 
 ```
-Current Status: This file is being edited... Please come back in a few Minutes.
+All nodetrees have been created by hand.
+Now they are being recreated via Python.
+The Project is currently not finished.
 ```
 
 ## More Information
