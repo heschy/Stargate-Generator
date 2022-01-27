@@ -37,15 +37,19 @@ class STARGATE_PT_MAINPANEL(T.Panel):
 
 
 	row = layout.row()
-        row.operator('stargate.addmilkygate_operator', icon='PLUS')
+    row.operator(sgg_ops.operators['mkgeonodes'], icon='PLUS')
 	#row = layout.row()                                              # Uncomment when Atlantis is Ready
 	#row.operator('stargate.addatlantisgate_operator', icon='PLUS')  # Uncomment when Atlantis Is Ready
-	row = layout.row()
-        row.operator('stargate.addshader_operator'   , icon='MATERIAL')
+	#row = layout.row()
+    #row.operator( , icon='MATERIAL')
 
 	return {'FINISHED'}
 
-classes = [STARGATE_PT_MAINPANEL]
+classes = [
+    STARGATE_PT_MAINPANEL,
+    CREATEGATE_OT_creategeometrynodes,
+    CREATEGATE_OT_createnaquadahshader
+]
 
 def register():
     for cls in classes:
