@@ -16,5 +16,6 @@ def removeold(name, items):
 
 # This is a Placeholder function.
 # It will be replaced when I need a new Submethod.
-def placeholder():
-    return 'PLACEHOLDER_EMPTY_RETURN'
+#def placeholder():
+#    return 'PLACEHOLDER_EMPTY_RETURN'
+#
