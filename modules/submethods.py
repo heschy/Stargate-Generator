@@ -11,7 +11,7 @@ def pattern(string):
 def removeold(name, items):
     name = pattern(name)
     for item in items:
-        if regex(name, item.name):
+        if regex(name, item.name): # If it is named Name.001 or Name.002 ... it will be deleted.
             items.remove(item)
 
 # This is a Placeholder function.

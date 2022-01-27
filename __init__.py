@@ -5,7 +5,9 @@ from bpy import types   as T
 from bpy import ops     as O
 from bpy import props   as P
 import bpy
-from .modules import *
+import .modules.nodes as sgg_nodes
+import .modules.op as sgg_ops
+import .modukes.submethods as sgg_submethods
 
 bl_info = {
     "name": "StarGate Generator",
@@ -32,8 +34,8 @@ class STARGATE_PT_MAINPANEL(T.Panel):
 
     def draw(self, context):
         layout = self.layout
-	
-	
+
+
 	row = layout.row()
         row.operator('stargate.addmilkygate_operator', icon='PLUS')
 	#row = layout.row()                                              # Uncomment when Atlantis is Ready
