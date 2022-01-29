@@ -11,6 +11,10 @@ If there is a Release you want, then you just need to download the `HeschyStarGa
 Note: I know that my english is not really good.
 ```
 
+### Current Development Status:
+
+I am trying to develop the Addon, but Blenders error-messages aren't verry useful and it is stressful to get a running file, so I am currently not working on this until 20th Feburary 2022. Thank you for reading this. 
+
 ## Current Status       
 
 ```
