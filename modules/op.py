@@ -16,6 +16,10 @@ class CREATEGATE_OT_creategeometrynodes(T.Operator):
     bl_idname = operators['mkgeonodes']
 
     def execute(self, context):
+        obj = C.object
+        obj.modifiers.new(name='Stargate', type='NODES')
+        
+
         return {'FINSISHED'}
 
     def invoke(self, context, event):
