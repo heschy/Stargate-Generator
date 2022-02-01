@@ -64,4 +64,4 @@ You can also use Icospheres as Chevrons. then there will be a new feature!
 
 #### Gravitational Fields
 With Geometry Nodes I created the Illusion that the Chevrons are floating on top of the Stargate. This Function can also be used to create/destroy the Gate.
-[![Alternate Text]({img/prerender01_thumb.png})]({media/prerender01.mp4} "Link to the Video")
+[Here](https://heschy.github.io/Stargate-Generator/media/prerender01.mp4) is a video of this Effect.
