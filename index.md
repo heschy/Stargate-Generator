@@ -58,5 +58,10 @@ Here is an image of my node tree ( from the Original gate ):
 ![IMG_003](img/ring.png)
 
 ### Geometry Nodes
-Here is the actual result of my Gemetry Nodes:
+Here is the first result of my Gemetry Nodes:
 ![IMG_004](img/firsttry.png.png)
+You can also use Icospheres as Chevrons. then there will be a new feature!
+
+#### Gravitational Fields
+With Geometry Nodes I created the Illusion that the Chevrons are floating on top of the Stargate. This Function can also be used to create/destroy the Gate.
+[Here](https://heschy.github.io/Stargate-Generator/media/prerender01.mp4) is a video of this Effect.
